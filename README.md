@@ -27,30 +27,47 @@ The planned customer-facing interface is a **Telegram bot**.
 
 ---
 
-## Project Architecture
+## System Architecture
 
 The planned system will work approximately as follows:
 
 ```text
-Customer
-   │
-   ▼
-Telegram Bot
-   │
-   ▼
-Virtual Ordering Agent
-   │
-   ▼
-Kestra
-   │
-   ▼
-PostgreSQL
-   │
-   ├── Menu Items
-   └── Orders
+                         CUSTOMER
+                            │
+                            │ Telegram
+                            ▼
+                 ┌─────────────────────┐
+                 │    TELEGRAM BOT     │
+                 │  Customer Interface │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │  VIRTUAL ORDER      │
+                 │      AGENT          │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │       KESTRA        │
+                 │ Workflow Automation │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │     POSTGRESQL      │
+                 │                     │
+                 │   ┌─────────────┐   │
+                 │   │  menu_items │   │
+                 │   └─────────────┘   │
+                 │                     │
+                 │   ┌─────────────┐   │
+                 │   │    orders   │   │
+                 │   └─────────────┘   │
+                 └─────────────────────┘
 ```
 
-The Telegram bot and complete ordering functionality are still under development.
+> **Current status:** PostgreSQL, Docker, and the Kestra menu workflow are implemented. The Telegram bot, ordering agent, and order functionality are planned next.
 
 ---
 
@@ -74,7 +91,7 @@ text-based-system-bot/
 
 PostgreSQL is used as the database for the fast-food system.
 
-The database contains a `menu_items` table with information such as:
+The database currently contains a `menu_items` table with information such as:
 
 * `id`
 * `name`
