@@ -1,0 +1,22 @@
+id: fastfood_menu
+namespace: fastfood
+
+tasks:
+  - id: get_menu
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: jdbc:postgresql://postgres:5432/fastfood
+    username: fastfood
+    password: root
+    sql: |
+      SELECT
+        id,
+        name,
+        description,
+        price,
+        available
+      FROM menu_items
+      ORDER BY id;
+
+  - id: print_menu
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.get_menu.row }}"
