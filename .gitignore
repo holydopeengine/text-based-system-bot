@@ -220,3 +220,6 @@ kestra_postgres_data
 env
 docker/postgres-data
 postgres_data
+.n8n_data
+.env
+.venv

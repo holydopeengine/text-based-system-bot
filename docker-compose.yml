@@ -1,4 +1,5 @@
 services:
+
   postgres:
     image: postgres:18
     container_name: fastfood-postgres
@@ -12,7 +13,6 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql
 
-
   kestra-postgres:
     image: postgres:18
     container_name: kestra-postgres
@@ -23,7 +23,6 @@ services:
       POSTGRES_PASSWORD: kestra
     volumes:
       - ./kestra_postgres_data:/var/lib/postgresql
-
 
   kestra:
     image: kestra/kestra:latest
@@ -65,3 +64,19 @@ services:
       - /tmp:/tmp
     depends_on:
       - kestra-postgres
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: fastfood-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_SECURE_COOKIE: "false"
+      GENERIC_TIMEZONE: Africa/Lagos
+      TZ: Africa/Lagos
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    depends_on:
+      - postgres
